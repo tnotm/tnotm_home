@@ -1,3 +1,5 @@
+personal_site_repo="tnotm.github.io"
+
 file_name() {
 	post_type='-note-';
 	curr_date=$(date +"%Y-%m-%d");
@@ -6,6 +8,6 @@ file_name() {
 	echo $filename;
 	}
 
-alias make_note="cd ~/Workspace/tnotm.github.io/_posts &&
+alias make_note="cd ~/Workspace/$personal_site_repo/_posts &&
 		 cp ~/Workspace/templates/note_post.md $curr_date-note-$curr_time.md &&
 		 vim $curr_date-note-$curr_time.md"

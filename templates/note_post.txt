@@ -1,0 +1,49 @@
+## HFM MS Perf Mon Setup
+
+# Implemented:
+DEV - 2014-12-05
+LOD - 2014-11-17
+
+# Issue:
+Need to monitor the Windows Server and HFM processes.
+
+# Solution:
+
+```
+"\Memory\*"
+"\Network Interface(*)\*"
+"\Processor(*)\*"
+"\Process(_Total)\% Processor Time"
+"\Process(_Total)\Private Bytes"
+"\Process(CasSecurity)\*"
+"\Process(HsvDataSource)\*"
+"\Process(HsvDataSource#1)\*"
+"\Process(HsvDataSource#2)\*"
+"\Process(HsvDataSource#3)\*"
+"\Process(HsxServer)\*"
+"\PhysicalDisk\*"
+"\System\*"
+```
+Copy the above configuration, edit as following, and save as basic_hfm_perfmon.txt.
+
+Open a command line in the folder where you saved the .txt file and use the following command to create the log with the necessary options:
+
+```
+logman create counter Basic_HFM -si 00:00:36 -f csv -max 10 -v nnnnnn -cnf 0 -cf "basic_hfm_perfmon.txt"
+```
+
+The name of the data collection set will be Basic_HFM
+```-si``` sets the interval to sample data to be every 36 seconds
+```-f``` sets the log file type will be saved as .csv
+```-max``` sets max file size to be 10 Mb
+```-v``` nnnnnn sets the output file name format to be numeric
+```-cnf``` 0 configures the collection to keep running when log file size limit set by -max is reached with the new log file name based on -v
+
+Provide the full path to the "basic_hfm_perfmon.txt" file if the command is not run from the directory where the file resides. You can drop the statement above into a new CMD file and execute from the same directory as the config file as well.  *The collection does need to be manually started initially and after each server reboot.* The syntax to manually start from a Command prompt is: ```logman start basic_hfm```.  Or you can open Performance Monitor 
+
+The Max size of the log file is currently set to 10 Mb. A new file is generated when the old file reaches 10 Mb. Monitor the logs to see how fast they switch from one to another. Generally 6-8 hours of logs are generated per log file. The logs should last about 8 hours, however try not to generate large files.  The system impact of logging should be negligible.
+
+When adding Process counters for HsvDatasource.exe, you only need to counters for the number of HFM applications that are expected to be created or run during monitoring.  If you have more than 4 applications in the list, add additional \Process(HsvDataSource#X)\* entries to account for all possible HFM applications.  It is OK to have more HsvDatasource process than you have running, but having fewer monitored means you could miss monitoring the correct process completely.
+
+*Based on Oracle Doc:*
+https://support.oracle.com/epmos/faces/DocContentDisplay?_afrLoop=575789490680732&id=953372.1

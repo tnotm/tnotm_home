@@ -1,0 +1,26 @@
+#!/bin/bash
+
+DEFAULT=default 
+
+   if [ -z "$1" ]                           # Is parameter #1 zero length?
+   then
+     echo "ERROR - Enter post type (blog, note, link..)"
+     return 0
+   else
+     echo "-Parameter #1 is \"$1\".-"
+   fi
+
+   variable=${1-$DEFAULT}                   #  What does
+   echo "variable = $variable"              #+ parameter substitution show?
+                                            #  ---------------------------
+                                            #  It distinguishes between
+                                            #+ no param and a null param.
+
+   if [ -z "$2" ]
+   then
+     echo "-Parameter #2 is zero length.-"
+   else
+     echo "-Parameter #2 is \"$2\".-"
+   fi
+
+exit

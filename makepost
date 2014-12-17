@@ -5,7 +5,6 @@ DEFAULT=default
    if [ -z "$1" ]                           # Is parameter #1 zero length?
    then
      echo "ERROR - Enter post type (blog, note, link..)"
-     return 0
    else
      echo "-Parameter #1 is \"$1\".-"
    fi

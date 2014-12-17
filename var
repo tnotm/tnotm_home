@@ -1,0 +1,60 @@
+#!/bin/bash
+
+var1='note';
+var2='blog';
+var2='link';
+echo $var1;
+
+var_pass=0;
+curr_date=$(date +"%Y-%m-%d");
+curr_time=$(date +"%H-%M-%S");
+post_type=null;
+num_args=$#
+
+echo Date: $curr_date;
+echo Time: $curr_time;
+echo Post Type: $post_type;
+echo Pass = $var_pass
+echo Number of args: $num_args;
+
+
+syntax_err1='Enter post type (blog, note, link..) as your first arg'
+
+echo "You start with $# positional parameters"
+
+# Loop until all parameters are used up
+while [ "$1" != "" ]; do
+	if [ $var_pass -eq 0 ]
+	    then
+			case "$1" in
+				"note")
+					post_type="$1"
+					echo $"$post_type"
+					var_pass=$(($var_pass + 1))
+					;;
+				"blog")
+					post_type="$1"
+					echo $"$post_type"
+					[ $var_pass++ ]
+					;; 
+				"link")
+					post_type="$1"
+					echo $"$post_type"
+					[ $var_pass++ ]
+					;; 
+				*)
+					echo $"$syntax_err1"
+					exit 0
+			esac
+		fi
+	
+	echo Pass = $var_pass
+    echo "Parameter 1 equals $1"
+    echo "You now have $# positional parameters"
+
+    # Shift all the parameters down by one
+    shift
+
+done
+	
+exit
